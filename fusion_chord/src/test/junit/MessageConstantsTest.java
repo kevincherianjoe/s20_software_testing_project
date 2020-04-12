@@ -1,4 +1,4 @@
-package test;
+package test.junit;
 
 import chordfusion.MessageConstants;
 import org.junit.Test;
