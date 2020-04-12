@@ -1,4 +1,4 @@
-package test;
+package test.mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
