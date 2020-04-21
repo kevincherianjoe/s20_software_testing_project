@@ -12,7 +12,7 @@ public class LyricsTable {
     List<LyricsData> listOfLyricsData = new ArrayList<LyricsData>();
     List<LyricsDataAuxPointer> dataAuxPointers = new ArrayList<LyricsDataAuxPointer>();
 
-    public class LyricsData {
+    public static class LyricsData {
         private String song;
         private String lyrics;
 
@@ -38,7 +38,7 @@ public class LyricsTable {
         }
     }
 
-    public class LyricsDataAuxPointer {
+    public static class LyricsDataAuxPointer {
         private int indexLocationInLyricsTable;
         private int index;
 
