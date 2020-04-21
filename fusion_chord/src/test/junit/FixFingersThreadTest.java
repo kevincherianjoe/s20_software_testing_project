@@ -18,7 +18,7 @@ public class FixFingersThreadTest {
 
         iNetSock = new InetSocketAddress("127.0.0.1", 1025);
         serverDataTable = ServerDataTable.getServerTable(
-                "serverTable.txt", 1, "C");
+                "fusion_chord/src/server.txt", 1, "C");
         chordNode = new ChordNode(iNetSock, serverDataTable);
         FixFingersThread fixFingersThread = new FixFingersThread(chordNode);
         fixFingersThread.start();
