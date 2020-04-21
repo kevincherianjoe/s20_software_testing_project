@@ -5,7 +5,6 @@ import chordfusion.MessageRouter;
 import chordfusion.ServerDataTable;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public class MessageRouterTest {

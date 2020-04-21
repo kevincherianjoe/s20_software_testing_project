@@ -2,7 +2,6 @@ package test.mockito;
 
 import chordfusion.ChordNode;
 import chordfusion.FixFingersThread;
-import chordfusion.PingPredecessorThread;
 import chordfusion.ServerDataTable;
 import org.junit.Before;
 import org.junit.Test;

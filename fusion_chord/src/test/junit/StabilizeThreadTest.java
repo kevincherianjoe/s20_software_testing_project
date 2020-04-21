@@ -1,7 +1,6 @@
 package test.junit;
 
 import chordfusion.ChordNode;
-import chordfusion.FixFingersThread;
 import chordfusion.ServerDataTable;
 import chordfusion.StabilizeThread;
 import org.junit.Test;

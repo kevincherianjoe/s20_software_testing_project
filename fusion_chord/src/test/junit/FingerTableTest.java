@@ -1,10 +1,10 @@
 package test.junit;
 
+import chordfusion.FingerTable;
 import org.junit.Test;
 
 import java.math.BigInteger;
 import java.net.InetSocketAddress;
-import chordfusion.FingerTable;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
