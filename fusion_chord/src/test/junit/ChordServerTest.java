@@ -1,32 +1,47 @@
 package test.junit;
 
-import chordfusion.ChordServer;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.Scanner;
+import chordfusion.ChordServer;
 
 public class ChordServerTest {
 
-    @Test
-    public void cst0() {
-//        ChordServer.main(new String[]{"No Agruements"});
+    // test no args
+    @Test(timeout = 1) public void cst0() {
+        // ChordServer.main(new String[]{});
+
+        // untestable w/ JUnit only
+        assertTrue(false);
     }
 
-    @Test
-    public void cst1() {
+    // test one arg
+    @Test(timeout = 1) public void cst1() {
+        // ChordServer.main(new String[]{ "test-input" });
 
-        String data = "exit\r\n";
-        InputStream stdin = System.in;
-        try {
-            System.setIn(new ByteArrayInputStream(data.getBytes()));
-            Scanner scanner = new Scanner(System.in);
-            System.out.println(scanner.nextLine());
-        } finally {
-            System.setIn(stdin);
-        }
-        ChordServer.main(new String[]{"fusion_chord/src/server.txt", "1"});
+        // untestable w/ JUnit only
+        assertTrue(false);
+    }
 
+    // test two args - invalid file path
+    @Test(expected = NullPointerException.class) public void cst2() {
+        ChordServer.main(new String[]{ "invalid-path", "0" });
+        assertTrue(false);
+    }
+
+    // test two args - invalid node id
+    @Test(expected = NumberFormatException.class) public void cst3() {
+        String path = System.getProperty("user.dir") + "/../serverTable.txt";
+        ChordServer.main(new String[]{ path, "not-an-int" });
+        assertTrue(false);
+    }
+
+    // test two args - valid input
+    @Test(timeout = 1) public void cst4() {
+        String path = System.getProperty("user.dir") + "/../serverTable.txt";
+        ChordServer.main(new String[]{ path, "1" });
+
+        // untestable w/ JUnit only
+        assertTrue(false);
     }
 }
