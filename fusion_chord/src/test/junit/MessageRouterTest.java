@@ -16,14 +16,15 @@ public class MessageRouterTest {
         InetSocketAddress iNetSockPred;
         ChordNode chordNode;
         ServerDataTable serverDataTable;
+        MessageRouter messageRouter;
 
         iNetSockPred = new InetSocketAddress("127.0.0.1", 1025);
         iNetSock = new InetSocketAddress("127.0.0.1", 1026);
         serverDataTable = ServerDataTable.getServerTable(
-                "fusion_chord/src/server.txt", 1, "C");
+                "fusion_chord/src/chordfusion/server.txt", 1, "C");
         chordNode = new ChordNode(iNetSock, serverDataTable);
         chordNode.setPredecessor(iNetSockPred);
-        MessageRouter messageRouter = new MessageRouter(chordNode);
+        messageRouter = new MessageRouter(chordNode);
         messageRouter.start();
 
     }
@@ -34,12 +35,13 @@ public class MessageRouterTest {
         InetSocketAddress iNetSock;
         ChordNode chordNode;
         ServerDataTable serverDataTable;
+        MessageRouter messageRouter;
 
         iNetSock = new InetSocketAddress("127.0.0.1", 1025);
         serverDataTable = ServerDataTable.getServerTable(
-                "fusion_chord/src/server.txt", 1, "C");
+                "fusion_chord/src/chordfusion/server.txt", 1, "C");
         chordNode = new ChordNode(iNetSock, serverDataTable);
-        MessageRouter messageRouter = new MessageRouter(chordNode);
+        messageRouter = new MessageRouter(chordNode);
         messageRouter.start();
 
     }

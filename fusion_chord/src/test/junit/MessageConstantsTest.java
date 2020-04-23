@@ -33,6 +33,7 @@ public class MessageConstantsTest {
     @Test
     public void mct2() {
         InetSocketAddress inetSocketAddress;
+
         MessageConstants.parseAddress(null);
         String badIpPort = "127.0.0.1:1025:65535";
         MessageConstants.parseAddress(badIpPort);
