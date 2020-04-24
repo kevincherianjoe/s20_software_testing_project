@@ -10,7 +10,7 @@ import java.net.InetSocketAddress;
 public class PingPredecessorThreadTest {
 
     @Test
-    public void pptt1() {
+    public void pptt0() {
         InetSocketAddress iNetSock;
         InetSocketAddress iNetSockPred;
         ChordNode chordNode;
@@ -28,7 +28,7 @@ public class PingPredecessorThreadTest {
     }
 
     @Test
-    public void pptt2() {
+    public void pptt1() {
 
         PingPredecessorThread pingPredecessorThread;
 
@@ -39,7 +39,7 @@ public class PingPredecessorThreadTest {
     }
 
     @Test
-    public void pptt3() {
+    public void pptt2() {
         InetSocketAddress iNetSock;
         ChordNode chordNode;
         ServerDataTable serverDataTable;
