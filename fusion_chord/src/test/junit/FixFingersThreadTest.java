@@ -15,12 +15,13 @@ public class FixFingersThreadTest {
         InetSocketAddress iNetSock;
         ChordNode chordNode;
         ServerDataTable serverDataTable;
+        FixFingersThread fixFingersThread;
 
         iNetSock = new InetSocketAddress("127.0.0.1", 1025);
         serverDataTable = ServerDataTable.getServerTable(
-                "fusion_chord/src/server.txt", 1, "C");
+                "fusion_chord/src/chordfusion/server.txt", 1, "C");
         chordNode = new ChordNode(iNetSock, serverDataTable);
-        FixFingersThread fixFingersThread = new FixFingersThread(chordNode);
+        fixFingersThread = new FixFingersThread(chordNode);
         fixFingersThread.start();
 
     }
