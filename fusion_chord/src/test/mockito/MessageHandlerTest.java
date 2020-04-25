@@ -56,7 +56,6 @@ public class MessageHandlerTest {
 		Mockito.when(m_socket.getInputStream()).thenReturn(inputStream);
 		Mockito.when(m_socket.getOutputStream()).thenReturn(outputStream);
 			
-			
 		messageHandler.run();
 		
 		Mockito.verify(m_socket).close();
