@@ -1,5 +1,6 @@
 package test.mockito;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Before;
@@ -18,25 +19,37 @@ public class FaultRecoveryAgentThreadTest {
 	
 	private FaultRecoveryAgentThread faultRecoveryAgentThread;
 	@Mock
-	private ServerDataTable serverDataTable;
+	private ServerDataTable serverDataTable = new ServerDataTable();
 	private List<ServerDataTable.ServerData> serverDataList;
+	private List<ServerDataTable.ServerData> serverDataListForRecovery;
+	private ServerDataTable serverDataTableForRecovery;
+	
+	@Mock
+	private FaultRecoveryAgentThread faultRecoveryAgentThreadForNotRecovery;
 	
 	
 	@Before
 	public void setup() throws Exception {
 		
 		serverDataTable = Mockito.spy(ServerDataTable.getServerTable("./src/chordfusion/server.txt", 3, ServerDataTable.FUSION_SERVER_TYPE));
-		faultRecoveryAgentThread = new FaultRecoveryAgentThread(serverDataTable, 3,new FusedBackUpTable());
+		FusedBackUpTable fusedBackUpTable = new FusedBackUpTable();
+		fusedBackUpTable.addOrReplaceFusedData("dummy".getBytes(), 0, 2);
+		faultRecoveryAgentThread = new FaultRecoveryAgentThread(serverDataTable, 3,fusedBackUpTable);
 		serverDataList = ServerDataTable.getServerTable("./src/chordfusion/server.txt", 3, ServerDataTable.FUSION_SERVER_TYPE).getServerDataTable();
 		
+		serverDataTableForRecovery = ServerDataTable.getServerTable("./src/chordfusion/server.txt", 3, ServerDataTable.FUSION_SERVER_TYPE);
+		serverDataTableForRecovery.updateServerStatus(2, 0);
+		serverDataListForRecovery = serverDataTableForRecovery.getServerDataTable();
+		
 	}
-	
-	
+
 	@Test (expected = RuntimeException.class)
-	public void testRunMethod() {
+	public void testRunMethodForRecoveryAgent() throws IOException {
 		
 		//respond with data twice and third time throw an exception  
-		Mockito.when(serverDataTable.getServerDataTable()).thenReturn(serverDataList).thenReturn(serverDataList).thenThrow(new RuntimeException());
+		Mockito.when(serverDataTable.getServerDataTable()).thenReturn(serverDataList).thenReturn(serverDataListForRecovery).
+										thenReturn(serverDataListForRecovery).thenThrow(new RuntimeException());
+		
 		faultRecoveryAgentThread.run();
 	}
 	
