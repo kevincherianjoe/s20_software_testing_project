@@ -4,6 +4,7 @@ import chordfusion.ServerDataTable;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -34,7 +35,7 @@ public class ServerDataTableTest {
         assertEquals(serverDataTable.getMyServer().getServerType(), serverType);
         assertEquals(serverDataTable.getNumberOfFusionServers(), 3);
         assertEquals(serverDataTable.getMyServer().getStatus(), 1);
-        serverDataTable.updateServerStatus(serverProcessNumberIP,0);
+        serverDataTable.updateServerStatus(serverProcessNumberIP, 0);
         assertEquals(serverDataTable.getMyServer().getStatus(), 1);
         int liveServerCount = serverDataTable.getLiveServerCount();
         assertEquals(liveServerCount, 2);
@@ -42,26 +43,40 @@ public class ServerDataTableTest {
         try {
             serverTCPClient.send("Hello");
         } catch (IOException e) {
-            System.out.println("IOException");
-            System.out.println(e);
+//            System.out.println("IOException");
         }
         try {
             serverTCPClient.sendReceieve("Goodbye");
         } catch (IOException e) {
-            System.out.println("IOException");
-            System.out.println(e);
+//            System.out.println("IOException");
         }
         serverDataTableList = serverDataTable.getServerDataTable();
-
-        for (ServerDataTable.ServerData serverData: serverDataTableList) {
+        for (ServerDataTable.ServerData serverData : serverDataTableList) {
             System.out.printf("IP: %s, Port: %d, Process #: %d, Server Type: %s\n", serverData.getIpAddress(),
                     serverData.getPort(), serverData.getServerProcessNumber(), serverData.getServerType());
         }
-
     }
 
     @Test
     public void sdt1() {
         ServerDataTable.getServerTable("xxx", 1, "C");
+    }
+
+    @Test
+    public void sdt2() {
+
+        ServerDataTable serverDataTable;
+        ServerSocket serverSocket;
+
+        try {
+            serverSocket = new ServerSocket(8030);
+            serverDataTable = ServerDataTable.getServerTable("fusion_chord/src/chordfusion/server.txt", 1, "C");
+            ServerDataTable.ServerTCPClient serverTCPClient = serverDataTable.getMyServer().getServerClient();
+            serverTCPClient.send("Hello");
+            serverSocket.close();
+        } catch (IOException e) {
+            System.out.println("IOException");
+//            System.out.println(e);
+        }
     }
 }
