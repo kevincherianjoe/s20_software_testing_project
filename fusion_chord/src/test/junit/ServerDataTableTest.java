@@ -32,22 +32,24 @@ public class ServerDataTableTest {
         assertEquals(serverDataTable.getMyServer().getPort(), portIP);
         assertEquals(serverDataTable.getMyServer().getServerProcessNumber(), serverProcessNumberIP);
         assertEquals(serverDataTable.getMyServer().getServerType(), serverType);
-        assertEquals(serverDataTable.getNumberOfFusionServers(), 1);
+        assertEquals(serverDataTable.getNumberOfFusionServers(), 3);
         assertEquals(serverDataTable.getMyServer().getStatus(), 1);
         serverDataTable.updateServerStatus(serverProcessNumberIP,0);
         assertEquals(serverDataTable.getMyServer().getStatus(), 1);
         int liveServerCount = serverDataTable.getLiveServerCount();
-        assertEquals(liveServerCount, 1);
+        assertEquals(liveServerCount, 2);
         ServerDataTable.ServerTCPClient serverTCPClient = serverDataTable.getMyServer().getServerClient();
         try {
             serverTCPClient.send("Hello");
         } catch (IOException e) {
             System.out.println("IOException");
+            System.out.println(e);
         }
         try {
             serverTCPClient.sendReceieve("Goodbye");
         } catch (IOException e) {
             System.out.println("IOException");
+            System.out.println(e);
         }
         serverDataTableList = serverDataTable.getServerDataTable();
 
