@@ -6,15 +6,17 @@ import chordfusion.ServerDataTable;
 import chordfusion.StabilizeThread;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.net.InetSocketAddress;
 
 import static org.mockito.Mockito.mock;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class StabilizeThreadTest {
 
     @Mock
