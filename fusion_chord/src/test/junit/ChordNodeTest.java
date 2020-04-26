@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import chordfusion.ChordNode;
 import chordfusion.HashUtils;
+import chordfusion.MessageConstants;
 import chordfusion.ServerDataTable;
 
 public class ChordNodeTest {
@@ -402,5 +403,73 @@ public class ChordNodeTest {
         cn.setPredecessor(isa02);
         cn.deleteSuccessor();
         assertEquals(isa02, cn.getSuccessor());
+    }
+
+    // test handleClientMessages empty input
+    @Test
+    public void cnt31() throws IOException {
+        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(bo));
+
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        assertEquals(null, cn.handleClientMessages(""));
+
+        bo.flush();
+        String allWrittenLines = new String(bo.toByteArray());
+        String expected = "Invalid Input to Server";
+        assertTrue(allWrittenLines.contains(expected));
+    }
+
+    // test handleClientMessages invalid input
+    @Test
+    public void cnt32() throws IOException {
+        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(bo));
+
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        assertEquals(null, cn.handleClientMessages("invalid message"));
+
+        bo.flush();
+        String allWrittenLines = new String(bo.toByteArray());
+        String expected = "Invalid Input to Server";
+        assertTrue(allWrittenLines.contains(expected));
+    }
+
+    // test handleClientMessages ADD_LYRICS invalid
+    @Test
+    public void cnt33() throws IOException {
+        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(bo));
+
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        assertEquals(null, cn.handleClientMessages(MessageConstants.ADD_LYRICS + " bad"));
+
+        bo.flush();
+        String allWrittenLines = new String(bo.toByteArray());
+        String expected = "Invalid Input to Server for client ";
+        assertTrue(allWrittenLines.contains(expected));
+    }
+
+    // test handleClientMessages FIND_LYRICS invalid
+    @Test
+    public void cnt34() throws IOException {
+        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(bo));
+
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        assertEquals(null, cn.handleClientMessages(MessageConstants.FIND_LYRICS + " invalid input"));
+
+        bo.flush();
+        String allWrittenLines = new String(bo.toByteArray());
+        String expected = "Invalid Input to Server for client ";
+        assertTrue(allWrittenLines.contains(expected));
     }
 }

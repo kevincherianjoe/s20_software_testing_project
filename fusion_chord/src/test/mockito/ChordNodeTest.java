@@ -1018,4 +1018,56 @@ public class ChordNodeTest {
             "Failed to parse address from response\n";
         assertEquals(expectedStdout, allWrittenLines);
     }
+
+    // test handleClientMessages ADD_LYRICS valid
+    @Test
+    public void cnt29() throws Exception {
+        MessageRouter mrMock = mock(MessageRouter.class);
+        PowerMockito.whenNew(MessageRouter.class).withAnyArguments().thenReturn(mrMock);
+        StabilizeThread stMock = mock(StabilizeThread.class);
+        PowerMockito.whenNew(StabilizeThread.class).withAnyArguments().thenReturn(stMock);
+        FixFingersThread fftMock = mock(FixFingersThread.class);
+        PowerMockito.whenNew(FixFingersThread.class).withAnyArguments().thenReturn(fftMock);
+        PingPredecessorThread pptMock = mock(PingPredecessorThread.class);
+        PowerMockito.whenNew(PingPredecessorThread.class).withAnyArguments().thenReturn(pptMock);
+        Socket soMock = mock(Socket.class);
+        PowerMockito.whenNew(Socket.class).withAnyArguments().thenReturn(soMock);
+        when(soMock.getOutputStream()).thenReturn(new ByteArrayOutputStream());
+        InputStream isMock = new ByteArrayInputStream("no-value".getBytes());
+        when(soMock.getInputStream()).thenReturn(isMock);
+
+        InetSocketAddress firstIsa = new InetSocketAddress("127.0.0.1", 3001);
+        InetSocketAddress otherIsa = new InetSocketAddress("127.0.0.1", 3002);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(firstIsa, sdt);
+        cn.join(otherIsa);
+
+        assertEquals(null, cn.handleClientMessages(MessageConstants.ADD_LYRICS + " 127.0.0.1:3002 lyrics are here"));
+    }
+
+    // test handleClientMessages FIND_LYRICS valid
+    @Test
+    public void cnt30() throws Exception {
+        MessageRouter mrMock = mock(MessageRouter.class);
+        PowerMockito.whenNew(MessageRouter.class).withAnyArguments().thenReturn(mrMock);
+        StabilizeThread stMock = mock(StabilizeThread.class);
+        PowerMockito.whenNew(StabilizeThread.class).withAnyArguments().thenReturn(stMock);
+        FixFingersThread fftMock = mock(FixFingersThread.class);
+        PowerMockito.whenNew(FixFingersThread.class).withAnyArguments().thenReturn(fftMock);
+        PingPredecessorThread pptMock = mock(PingPredecessorThread.class);
+        PowerMockito.whenNew(PingPredecessorThread.class).withAnyArguments().thenReturn(pptMock);
+        Socket soMock = mock(Socket.class);
+        PowerMockito.whenNew(Socket.class).withAnyArguments().thenReturn(soMock);
+        when(soMock.getOutputStream()).thenReturn(new ByteArrayOutputStream());
+        InputStream isMock = new ByteArrayInputStream("no-value".getBytes());
+        when(soMock.getInputStream()).thenReturn(isMock);
+
+        InetSocketAddress firstIsa = new InetSocketAddress("127.0.0.1", 3001);
+        InetSocketAddress otherIsa = new InetSocketAddress("127.0.0.1", 3002);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(firstIsa, sdt);
+        cn.join(otherIsa);
+
+        assertEquals(null, cn.handleClientMessages(MessageConstants.FIND_LYRICS + " 127.0.0.1:3002"));
+    }
 }
