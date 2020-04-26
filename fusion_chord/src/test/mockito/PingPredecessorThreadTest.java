@@ -7,12 +7,10 @@ import chordfusion.ServerDataTable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.net.InetSocketAddress;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
 public class PingPredecessorThreadTest {
@@ -38,7 +36,7 @@ public class PingPredecessorThreadTest {
 
         iNetSockPred = new InetSocketAddress("127.0.0.1", 1025);
         Mockito.when(m_chordNode.getPredecessor()).thenReturn(iNetSockPred);
-        Mockito.when(m_chordNode.sendReceiveMessage(iNetSockPred, "ping")).thenReturn(null);
+        Mockito.when(m_chordNode.sendReceiveMessage(iNetSockPred, MessageConstants.PING)).thenReturn(null);
         m_pingPredecessorThread.start();
     }
 }
