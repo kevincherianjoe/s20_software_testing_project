@@ -194,4 +194,213 @@ public class ChordNodeTest {
         ChordNode cn = new ChordNode(isa01, sdt);
         assertEquals(null, cn.notify(isa01));
     }
+
+    // test notified w/ null predecessor
+    @Test
+    public void cnt14() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        InetSocketAddress isa02 = new InetSocketAddress("127.0.0.1", 3002);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.notified(isa02);
+        assertEquals(isa02, cn.getPredecessor());
+    }
+
+    // test notified w/ self predecessor
+    @Test
+    public void cnt15() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        InetSocketAddress isa02 = new InetSocketAddress("127.0.0.1", 3002);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setPredecessor(isa01);
+        cn.notified(isa02);
+        assertEquals(isa02, cn.getPredecessor());
+    }
+
+    // test notified w/ not null predecessor or self predecessor
+    // & proposed not closer to self
+    @Test
+    public void cnt16() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        InetSocketAddress isa02 = new InetSocketAddress("127.0.0.1", 3002);
+        InetSocketAddress isa03 = new InetSocketAddress("127.0.0.1", 3003);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setPredecessor(isa02);
+        cn.notified(isa03);
+        assertEquals(isa02, cn.getPredecessor());
+    }
+
+    // test notified w/ not null predecessor or self predecessor
+    // & proposed closer to self
+    @Test
+    public void cnt17() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        InetSocketAddress isa02 = new InetSocketAddress("127.0.0.1", 3008);
+        InetSocketAddress isa03 = new InetSocketAddress("127.0.0.1", 3003);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setPredecessor(isa02);
+        cn.notified(isa03);
+        assertEquals(isa03, cn.getPredecessor());
+    }
+
+    // test setFingerSynchronized
+    @Test
+    public void cnt18() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        InetSocketAddress isa02 = new InetSocketAddress("127.0.0.1", 3002);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setFingerSyncrhonized(0, isa02);
+        assertEquals(isa02, cn.getSuccessor());
+    }
+
+    // test setFingerSynchronized & don't notify - not self
+    @Test
+    public void cnt19() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setFingerSyncrhonized(0, isa01);
+        assertEquals(isa01, cn.getSuccessor());
+    }
+
+    // test setFingerSynchronized & don't notify - not 0 index
+    @Test
+    public void cnt20() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setFingerSyncrhonized(1, isa01);
+        assertEquals(null, cn.getSuccessor());
+    }
+
+    // test populateSuccessors w/ successor null
+    @Test
+    public void cnt21() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.populateSuccessors();
+        assertEquals(null, cn.getSuccessor());
+    }
+
+    // test populateSuccessors w/ successor is self
+    @Test
+    public void cnt22() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setFingerSyncrhonized(0, isa01);
+        cn.populateSuccessors();
+        assertEquals(isa01, cn.getSuccessor());
+    }
+
+    // test populateSuccessors w/ successor null
+    // & second finger pre-assigned
+    // BUG in inner for-loop
+    @Test
+    public void cnt23() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        InetSocketAddress isa02 = new InetSocketAddress("127.0.0.1", 3002);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setFingerSyncrhonized(2, isa02);
+        cn.populateSuccessors();
+        assertEquals(isa02, cn.getSuccessor());
+    }
+
+    // test populateSuccessors w/ successor null
+    // & first finger pre-assigned
+    @Test
+    public void cnt24() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        InetSocketAddress isa02 = new InetSocketAddress("127.0.0.1", 3002);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setFingerSyncrhonized(1, isa02);
+        cn.populateSuccessors();
+        assertEquals(isa02, cn.getSuccessor());
+    }
+
+    // test populateSuccessors w/ successor null
+    // & predecessor not null
+    // & predecessor not self
+    @Test
+    public void cnt25() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        InetSocketAddress isa02 = new InetSocketAddress("127.0.0.1", 3002);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setPredecessor(isa02);
+        cn.populateSuccessors();
+        assertEquals(isa02, cn.getSuccessor());
+    }
+
+    // test populateSuccessors w/ successor self
+    // & predecessor not null
+    // & predecessor not self
+    @Test
+    public void cnt26() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        InetSocketAddress isa02 = new InetSocketAddress("127.0.0.1", 3002);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setFingerSyncrhonized(0, isa01);
+        cn.setPredecessor(isa02);
+        cn.populateSuccessors();
+        assertEquals(isa02, cn.getSuccessor());
+    }
+
+    // test deleteSuccessor w/ null successor
+    @Test
+    public void cnt27() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.deleteSuccessor();
+        assertEquals(null, cn.getSuccessor());
+    }
+
+    // test deleteSuccessor w/ successor as only entry in finger table
+    // & no predecessor
+    @Test
+    public void cnt28() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setFingerSyncrhonized(0, isa01);
+        cn.deleteSuccessor();
+        assertEquals(null, cn.getSuccessor());
+    }
+
+    // test deleteSuccessor w/ successor as only entry in finger table
+    // & predecessor is successor
+    @Test
+    public void cnt29() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setFingerSyncrhonized(0, isa01);
+        cn.setPredecessor(isa01);
+        cn.deleteSuccessor();
+        assertEquals(null, cn.getSuccessor());
+    }
+
+    // test deleteSuccessor w/ successor as only entry in finger table
+    // & predecessor not null and not successor
+    // & predecessorsPredecessor is null
+    @Test
+    public void cnt30() {
+        InetSocketAddress isa01 = new InetSocketAddress("127.0.0.1", 3001);
+        InetSocketAddress isa02 = new InetSocketAddress("127.0.0.1", 3002);
+        ServerDataTable sdt = new ServerDataTable();
+        ChordNode cn = new ChordNode(isa01, sdt);
+        cn.setFingerSyncrhonized(0, isa01);
+        cn.setPredecessor(isa02);
+        cn.deleteSuccessor();
+        assertEquals(isa02, cn.getSuccessor());
+    }
 }
