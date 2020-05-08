@@ -1,4 +1,4 @@
-package test.mockito;
+package test.powermock;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyInt;
